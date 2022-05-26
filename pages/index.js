@@ -1,5 +1,7 @@
+import Layout from '../components/Layout.js'
+
 const HomePage = () => {
-    return <div>Welcome t Next.js!</div>
+    return <Layout>Welcome o Next.js!</Layout>
 }
 
 export default HomePage
