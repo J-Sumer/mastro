@@ -31,7 +31,11 @@ const Register = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/api/register', { name, email, password })
+            setState({
+                ...state,
+                buttonText: 'Registering..'
+            })
+            const response = await axios.post(`${process.env.API}/register`, { name, email, password })
             setState({
                 name: '',
                 email: '',
@@ -53,7 +57,7 @@ const Register = () => {
     // Using promises for handling form submissions
     const handleSubmitPromise = (event) => {
         event.preventDefault()
-        axios.post('http://localhost:8000/api/register', {
+        axios.post(`${process.env.API}/register`, {
             name, email, password
         }).then(res => {
             setState({
@@ -80,18 +84,18 @@ const Register = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group mb-3'>
                     <label htmlFor="name" className="form-label">Full Name</label>
-                    <input onChange={handleChange('name')} type="text" className="form-control shadow-sm" id="name" aria-describedby="nameHelp" value={name} />
+                    <input onChange={handleChange('name')} type="text" className="form-control shadow-sm" id="name" aria-describedby="nameHelp" value={name} required/>
                 </div>
 
                 <div className='form-group mb-3'>
                     <label htmlFor="email" className="form-label">Email address</label>
-                    <input onChange={handleChange('email')} type="text" className="form-control shadow-sm" id="email" aria-describedby="emailHelp" value={email} />
+                    <input onChange={handleChange('email')} type="text" className="form-control shadow-sm" id="email" aria-describedby="emailHelp" value={email} required/>
                     <div id="email" className="form-text">We'll never share your email with anyone else.</div>
                 </div>
 
                 <div className='form-group mb-3'>
                     <label htmlFor="password" className="form-label">Password</label>
-                    <input onChange={handleChange('password')} type="password" className="form-control shadow-sm" id="password" aria-describedby="passwordHelp" value={password} />
+                    <input onChange={handleChange('password')} type="password" className="form-control shadow-sm" id="password" aria-describedby="passwordHelp" value={password} required/>
                 </div>
 
                 <div className='form-group'>

@@ -1,0 +1,13 @@
+Rename this file to .env
+
+PORT=8000
+CLIENT_URL=http://localhost:3000
+DATABASE=mongodb://127.0.0.1:27017/mastro
+AWS_ACCESS_KEY=<IAM access key>
+AWS_SECRET_KEY=<IAM secret key>
+AWS_REGION=us-east-1
+EMAIL_FROM=<From email id>
+EMAIL_TO=<To email id for development>
+JWT_SECRET=randomnumber
+JWT_ACCOUNT_ACTIVATION=randomnumber
+JWT_RESET_PASSWORD=randomnumber
