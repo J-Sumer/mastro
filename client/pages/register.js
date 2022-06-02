@@ -1,6 +1,7 @@
 import Layout from '../components/Layout.js'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import axios from 'axios'
 
 const Register = () => {
 
@@ -15,6 +16,8 @@ const Register = () => {
         buttonText: "Register"
     })
 
+    const { name, email, password, error, success, buttonText } = state;
+
     const handleChange = (name) => (event) => {
         setState({
             ...state,
@@ -25,12 +28,13 @@ const Register = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        router.push("/")
+        axios.post('http://localhost:8000/api/register', {
+            name, email, password
+        }).then(res => console.log(res))
+            .catch(err => console.log(err))
     }
 
     const registerForm = () => {
-
-        const { name, email, password, error, success, buttonText } = state;
 
         return (
             <form onSubmit={handleSubmit}>
