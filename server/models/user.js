@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { createHmac } = await import('node:crypto');
+const { createHmac } = import('node:crypto');
 
 const userSchema = new mongoose.Schema(
     {
