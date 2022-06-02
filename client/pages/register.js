@@ -2,6 +2,7 @@ import Layout from '../components/Layout.js'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
+import { showErrorMessage, showSuccessMessage } from '../helpers/alerts.js'
 
 const Register = () => {
 
@@ -26,12 +27,51 @@ const Register = () => {
         })
     }
 
-    const handleSubmit = (event) => {
+    // Using async await for handling form submissions
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:8000/api/register', { name, email, password })
+            setState({
+                name: '',
+                email: '',
+                password: '',
+                buttonText: 'Submitted',
+                success: res.data.message,
+                error: ''
+            })
+        } catch (err) {
+            setState({
+                ...state,
+                buttonText: 'Register',
+                error: err.response.data.error,
+                success: ''
+            })
+        }
+    }
+
+    // Using promises for handling form submissions
+    const handleSubmitPromise = (event) => {
         event.preventDefault()
         axios.post('http://localhost:8000/api/register', {
             name, email, password
-        }).then(res => console.log(res))
-            .catch(err => console.log(err))
+        }).then(res => {
+            setState({
+                name: '',
+                email: '',
+                password: '',
+                buttonText: 'Submitted',
+                success: res.data.message,
+                error: ''
+            })
+        }).catch(err => {
+            setState({
+                ...state,
+                buttonText: 'Register',
+                error: err.response.data.error,
+                success: ''
+            })
+        })
     }
 
     const registerForm = () => {
@@ -62,6 +102,8 @@ const Register = () => {
     }
 
     return <Layout>
+        {success && showSuccessMessage(success) }
+        {error && showErrorMessage(error)}
         <h1>Register!</h1>
         <br />
         {registerForm()}

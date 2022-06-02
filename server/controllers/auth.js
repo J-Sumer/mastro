@@ -37,9 +37,9 @@ exports.register = async (req, res) => {
             })
         })
         .catch(error => {
-            console.log('ses email on register', error);
-            res.json({
-                message: `We could not verify your email. Please try again`
+            console.error('ses email on register', error);
+            res.status(400).json({
+                error: `We could not verify your email. Please try again`
             })
         });
 };
