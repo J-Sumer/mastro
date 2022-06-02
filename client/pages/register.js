@@ -35,7 +35,7 @@ const Register = () => {
                 ...state,
                 buttonText: 'Registering..'
             })
-            const response = await axios.post(`${process.env.API}/register`, { name, email, password })
+            const res = await axios.post(`${process.env.API}/register`, { name, email, password })
             setState({
                 name: '',
                 email: '',
@@ -45,6 +45,7 @@ const Register = () => {
                 error: ''
             })
         } catch (err) {
+            console.log(err)
             setState({
                 ...state,
                 buttonText: 'Register',
@@ -84,18 +85,18 @@ const Register = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group mb-3'>
                     <label htmlFor="name" className="form-label">Full Name</label>
-                    <input onChange={handleChange('name')} type="text" className="form-control shadow-sm" id="name" aria-describedby="nameHelp" value={name} required/>
+                    <input onChange={handleChange('name')} type="text" className="form-control shadow-sm" id="name" aria-describedby="nameHelp" value={name} required />
                 </div>
 
                 <div className='form-group mb-3'>
                     <label htmlFor="email" className="form-label">Email address</label>
-                    <input onChange={handleChange('email')} type="text" className="form-control shadow-sm" id="email" aria-describedby="emailHelp" value={email} required/>
+                    <input onChange={handleChange('email')} type="text" className="form-control shadow-sm" id="email" aria-describedby="emailHelp" value={email} required />
                     <div id="email" className="form-text">We'll never share your email with anyone else.</div>
                 </div>
 
                 <div className='form-group mb-3'>
                     <label htmlFor="password" className="form-label">Password</label>
-                    <input onChange={handleChange('password')} type="password" className="form-control shadow-sm" id="password" aria-describedby="passwordHelp" value={password} required/>
+                    <input onChange={handleChange('password')} type="password" className="form-control shadow-sm" id="password" aria-describedby="passwordHelp" value={password} required />
                 </div>
 
                 <div className='form-group'>
@@ -106,7 +107,7 @@ const Register = () => {
     }
 
     return <Layout>
-        {success && showSuccessMessage(success) }
+        {success && showSuccessMessage(success)}
         {error && showErrorMessage(error)}
         <h1>Register!</h1>
         <br />

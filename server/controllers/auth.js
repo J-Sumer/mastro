@@ -22,7 +22,7 @@ exports.register = async (req, res) => {
     })
 
     const token = jwt.sign({ name, email, password }, process.env.JWT_ACCOUNT_ACTIVATION, {
-        expiresIn: '10m'
+        expiresIn: '10d'
     })
 
     const params = registerEamilParams(name, email, token)
