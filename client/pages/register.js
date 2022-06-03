@@ -1,12 +1,18 @@
 import Layout from '../components/Layout.js'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { showErrorMessage, showSuccessMessage } from '../helpers/alerts.js'
+import { authenticate, isAuth } from '../helpers/auth.js'
+import Router from 'next/router'
 
 const Register = () => {
 
     const router = useRouter()
+
+    useEffect(() => {
+        isAuth() && Router.push("/")
+    }, [])
 
     const [state, setState] = useState({
         name: "",

@@ -75,3 +75,23 @@ exports.registerActivate = async (req, res) => {
         })
     }
 }
+
+exports.login = async (req, res) => {
+    const { email, password } = req.body;
+
+    User.findOne({ email }).exec((err, user) => {
+        if (err || !user) return res.status(400).json({ error: "Cannot find account with given credentials" })
+
+        if (!user.authenticate(password)) return res.status(400).json({ error: "Cannot find account with given credentials, please try again" })
+
+        //Generate token and send to client
+        const { _id, name, email, role } = user;
+        const token = jwt.sign({ _id }, process.env.JWT_SECRET, {
+            expiresIn: '10d'
+        })
+        res.json({
+            token,
+            user: { _id, name, email, role }
+        })
+    })
+} 
