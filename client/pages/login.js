@@ -18,6 +18,10 @@ const Login = () => {
         buttonText: "Login"
     })
 
+    useEffect(() => {
+        isAuth() && Router.push('/')
+    }, [])
+
     const { email, password, error, buttonText } = state;
 
     const handleChange = (name) => (event) => {
@@ -38,7 +42,7 @@ const Login = () => {
             })
             const res = await axios.post(`${process.env.API}/login`, { email, password });
             authenticate(res);
-            Router.push("/")
+            (isAuth()) && (isAuth.role === 'admin' ? Router.push('/admin') : Router.push('/user'))
         } catch (err) {
             console.log(err)
             setState({
