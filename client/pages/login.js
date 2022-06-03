@@ -1,14 +1,14 @@
 import Layout from '../components/Layout.js'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Router from 'next/router'
+// import Router from 'next/router'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { showErrorMessage, showSuccessMessage } from '../helpers/alerts.js'
 import { authenticate, isAuth } from '../helpers/auth.js'
 
 const Login = () => {
-
+    console.log("loggginggg")
     const router = useRouter()
 
     const [state, setState] = useState({
@@ -19,8 +19,8 @@ const Login = () => {
     })
 
     useEffect(() => {
-        isAuth() && Router.push('/')
-    }, [])
+        isAuth() && router.push('/')
+    }, [router])
 
     const { email, password, error, buttonText } = state;
 
@@ -42,7 +42,8 @@ const Login = () => {
             })
             const res = await axios.post(`${process.env.API}/login`, { email, password });
             authenticate(res);
-            (isAuth()) && (isAuth.role === 'admin' ? Router.push('/admin') : Router.push('/user'))
+            (isAuth()) && (isAuth.role === 'admin' ? router.push('/admin') : router.push('/user'))
+            // await isAuth() && await router.push('/admin')
         } catch (err) {
             console.log(err)
             setState({

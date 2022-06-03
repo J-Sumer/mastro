@@ -1,5 +1,5 @@
 import Cookie from 'js-cookie'
-import { useRouter } from 'next/router'
+import Router from 'next/router'
 
 export const setCookie = (key, value) => {
     if (process.browser) {
@@ -54,10 +54,9 @@ export const isAuth = () => {
 }
 
 export const signOut = () => {
-    const router = useRouter()
     if (process.browser) {
         removeCookie("token")
         removeLocalStorage("user")
     }
-    router.push("/login")
+    // Router.push("/login")
 }

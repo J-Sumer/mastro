@@ -1,15 +1,34 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { Router } from "next/router";
-import nProgress from 'nprogress';
+import { useRouter } from 'next/router'
+import NProgress from 'nprogress';
 import "nprogress/nprogress.css"
-
-Router.events.on("routeChangeStart", nProgress.start);
-Router.events.on("routeChangeError", nProgress.done);
-Router.events.on("routeChangeComplete", nProgress.done);
+import { isAuth, signOut } from '../helpers/auth'
 
 const Layout = ({ children }) => {
+
+    const router = useRouter()
+
+    useEffect(() => {
+        const handleStart = (url) => {
+            console.log(`Loading: ${url}`)
+            NProgress.start()
+        }
+        const handleStop = () => {
+            NProgress.done()
+        }
+
+        router.events.on('routeChangeStart', handleStart)
+        router.events.on('routeChangeComplete', handleStop)
+        router.events.on('routeChangeError', handleStop)
+
+        return () => {
+            router.events.off('routeChangeStart', handleStart)
+            router.events.off('routeChangeComplete', handleStop)
+            router.events.off('routeChangeError', handleStop)
+        }
+    }, [router])
 
     const head = () => {
         return (
@@ -21,6 +40,13 @@ const Layout = ({ children }) => {
         )
     }
 
+    const authDetails = isAuth();
+
+    const logout = async () => {
+        authDetails && signOut();
+        await router.push('/login')
+    }
+
     const nav = () => {
         return (
             <ul className="nav bg-dark">
@@ -29,20 +55,54 @@ const Layout = ({ children }) => {
                         <a className="nav-link text-light" href="">Home</a>
                     </Link>
                 </li>
-                <li className="nav-item">
-                    <Link href="/login">
-                        <a className="nav-link text-light" href="">Login</a>
-                    </Link>
-                </li>
-                <li className="nav-item">
-                    <Link href="/register">
-                        <a className="nav-link text-light" href="">Register</a>
-                    </Link>
-                </li>
+                {
+                    !authDetails && (
+                        <React.Fragment>
+
+                            <li className="nav-item ms-auto">
+                                <Link href="/login">
+                                    <a className="nav-link text-light" href="">Login</a>
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link href="/register">
+                                    <a className="nav-link text-light" href="">Register</a>
+                                </Link>
+                            </li>
+                        </React.Fragment>
+                    )
+                }
+                {
+                    authDetails && authDetails.role === 'admin' && (
+                        <React.Fragment>
+                            <li className="nav-item ms-auto">
+                                <Link href="/admin">
+                                    <a className="nav-link text-light" href="">Admin</a>
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <a onClick={logout} className="nav-link text-light">Logout</a>
+                            </li>
+                        </React.Fragment>
+                    )
+                }
+                {
+                    authDetails && authDetails.role !== 'admin' && (
+                        <React.Fragment>
+                            <li className="nav-item ms-auto">
+                                <Link href="/user">
+                                    <a className="nav-link text-light" href="">{authDetails.name}</a>
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <a onClick={logout} className="nav-link text-light">Logout</a>
+                            </li>
+                        </React.Fragment>
+                    )
+                }
             </ul>
         )
     }
-
 
     return (
         <React.Fragment>
