@@ -39,7 +39,7 @@ const ActivateAccount = () => {
         setState({ ...state, buttonText: 'Activating' })
 
         try {
-            const response = await axios.post(`${API}/register/activate`, { token })
+            const response = await axios.post(`${process.env.API}/register/activate`, { token })
             setState({ ...state, buttonText: 'Activated', success: 'Account has been activated', error: '' })
         } catch (err) {
             setState({ ...state, buttonText: 'Activate account', success: '', error: 'There is an issue with the activation' })

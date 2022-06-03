@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { createHmac } = import('node:crypto');
+const crypto = require('node:crypto');
 
 const userSchema = new mongoose.Schema(
     {
@@ -64,7 +64,7 @@ userSchema.methods = {
     encryptPassword: function (password) {
         if (!password) return ''
         try {
-            const hash = createHmac('sha256', this.salt)
+            const hash = crypto.createHmac('sha256', this.salt)
                 .update(password)
                 .digest('hex');
             return hash
