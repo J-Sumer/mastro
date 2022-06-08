@@ -74,30 +74,28 @@ const Layout = ({ children }) => {
                 }
                 {
                     authDetails && authDetails.role === 'admin' && (
-                        <React.Fragment>
-                            <li className="nav-item ms-auto">
-                                <Link href="/admin">
-                                    <a className="nav-link text-light" href="">Admin</a>
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <a onClick={logout} className="nav-link text-light">Logout</a>
-                            </li>
-                        </React.Fragment>
+                        <li className="nav-item ms-auto">
+                            <Link href="/admin">
+                                <a className="nav-link text-light" href="">Admin</a>
+                            </Link>
+                        </li>
                     )
                 }
                 {
                     authDetails && authDetails.role !== 'admin' && (
-                        <React.Fragment>
-                            <li className="nav-item ms-auto">
-                                <Link href="/user">
-                                    <a className="nav-link text-light" href="">{authDetails.name}</a>
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <a onClick={logout} className="nav-link text-light">Logout</a>
-                            </li>
-                        </React.Fragment>
+                        <li className="nav-item ms-auto">
+                            <Link href="/user">
+                                <a className="nav-link text-light" href="">{authDetails.name}</a>
+                            </Link>
+                        </li>
+                    )
+                }
+                {
+                    authDetails && (
+
+                        <li className="nav-item">
+                            <a onClick={logout} className="nav-link text-light">Logout</a>
+                        </li>
                     )
                 }
             </ul>
