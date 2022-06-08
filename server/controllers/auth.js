@@ -3,6 +3,7 @@ const User = require('../models/user.js')
 const jwt = require('jsonwebtoken')
 const { registerEamilParams } = require('../helpers/email.js')
 const { nanoid } = require('nanoid')
+var { expressjwt } = require("express-jwt");
 
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -94,4 +95,8 @@ exports.login = async (req, res) => {
             user: { _id, name, email, role }
         })
     })
-} 
+}
+
+// This will take token from cookie, decode it and stamp it to req.user
+exports.requireSignIn = expressjwt({ secret: process.env.JWT_SECRET, algorithms: ["HS256"] })
+

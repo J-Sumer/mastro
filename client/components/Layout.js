@@ -52,7 +52,7 @@ const Layout = ({ children }) => {
             <ul className="nav bg-dark">
                 <li className="nav-item">
                     <Link href="/">
-                        <a className="nav-link text-light" href="">Home</a>
+                        <a className="nav-link text-light" href="#">Home</a>
                     </Link>
                 </li>
                 {
@@ -61,12 +61,12 @@ const Layout = ({ children }) => {
 
                             <li className="nav-item ms-auto">
                                 <Link href="/login">
-                                    <a className="nav-link text-light" href="">Login</a>
+                                    <a className="nav-link text-light" href="#">Login</a>
                                 </Link>
                             </li>
                             <li className="nav-item">
                                 <Link href="/register">
-                                    <a className="nav-link text-light" href="">Register</a>
+                                    <a className="nav-link text-light" href="#">Register</a>
                                 </Link>
                             </li>
                         </React.Fragment>
@@ -76,7 +76,7 @@ const Layout = ({ children }) => {
                     authDetails && authDetails.role === 'admin' && (
                         <li className="nav-item ms-auto">
                             <Link href="/admin">
-                                <a className="nav-link text-light" href="">Admin</a>
+                                <a className="nav-link text-light" href="#">Admin</a>
                             </Link>
                         </li>
                     )
@@ -85,7 +85,7 @@ const Layout = ({ children }) => {
                     authDetails && authDetails.role !== 'admin' && (
                         <li className="nav-item ms-auto">
                             <Link href="/user">
-                                <a className="nav-link text-light" href="">{authDetails.name}</a>
+                                <a className="nav-link text-light" href="#">{authDetails.name}</a>
                             </Link>
                         </li>
                     )
@@ -94,7 +94,7 @@ const Layout = ({ children }) => {
                     authDetails && (
 
                         <li className="nav-item">
-                            <a onClick={logout} className="nav-link text-light">Logout</a>
+                            <a onClick={logout} className="nav-link text-light" href="#">Logout</a>
                         </li>
                     )
                 }
