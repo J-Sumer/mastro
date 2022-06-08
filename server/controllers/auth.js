@@ -88,7 +88,8 @@ exports.login = async (req, res) => {
         //Generate token and send to client
         const { _id, name, email, role } = user;
         const token = jwt.sign({ _id }, process.env.JWT_SECRET, {
-            expiresIn: '10d'
+            expiresIn: '10d',
+            algorithm: 'HS256'
         })
         res.json({
             token,
@@ -100,3 +101,33 @@ exports.login = async (req, res) => {
 // This will take token from cookie, decode it and stamp it to req.user
 exports.requireSignIn = expressjwt({ secret: process.env.JWT_SECRET, algorithms: ["HS256"] })
 
+exports.authMiddleware = (req, res, next) => {
+    const authUserId = req.auth._id
+    User.findOne({ _id: authUserId }).exec((err, user) => {
+        if (err || !user) {
+            return res.status(400).json({
+                error: "User not found"
+            })
+        }
+        req.profile = user
+        next()
+    })
+}
+
+exports.adminMiddleware = (req, res, next) => {
+    const authUserId = req.auth._id
+    User.findOne({ _id: authUserId }).exec((err, user) => {
+        if (err || !user) {
+            return res.status(400).json({
+                error: "User not found"
+            })
+        }
+        if (user.role !== "admin") {
+            return res.status(400).json({
+                error: "Admin access denied"
+            })
+        }
+        req.profile = user
+        next()
+    })
+}

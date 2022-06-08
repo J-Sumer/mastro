@@ -22,8 +22,10 @@ app.use(cors({
 
 // Import routes
 const authRoutes = require('./routes/auth.js')
+const userRoutes = require('./routes/user.js')
 // Use routes
 app.use('/api', authRoutes)
+app.use('/api', userRoutes)
 
 
 // Default route
