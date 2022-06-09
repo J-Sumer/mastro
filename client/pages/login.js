@@ -8,7 +8,6 @@ import { showErrorMessage, showSuccessMessage } from '../helpers/alerts.js'
 import { authenticate, isAuth } from '../helpers/auth.js'
 
 const Login = () => {
-    console.log("loggginggg")
     const router = useRouter()
 
     const [state, setState] = useState({
