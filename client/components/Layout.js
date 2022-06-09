@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import NProgress from 'nprogress';
 import "nprogress/nprogress.css"
 import { isAuth, signOut } from '../helpers/auth'
-
 const Layout = ({ children }) => {
+
+    const [hasMounted, setHasMounted] = useState(false);
 
     const router = useRouter()
 
@@ -22,6 +23,7 @@ const Layout = ({ children }) => {
         router.events.on('routeChangeStart', handleStart)
         router.events.on('routeChangeComplete', handleStop)
         router.events.on('routeChangeError', handleStop)
+        setHasMounted(true);
 
         return () => {
             router.events.off('routeChangeStart', handleStart)
@@ -29,6 +31,10 @@ const Layout = ({ children }) => {
             router.events.off('routeChangeError', handleStop)
         }
     }, [router])
+
+    if (!hasMounted) {
+        return null;
+    }
 
     const head = () => {
         return (
