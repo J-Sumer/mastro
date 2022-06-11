@@ -98,7 +98,7 @@ exports.login = async (req, res) => {
     })
 }
 
-// This will take token from cookie, decode it and stamp it to req.user
+// This will take token from cookie, decode it and stamp it to req.auth
 exports.requireSignIn = expressjwt({ secret: process.env.JWT_SECRET, algorithms: ["HS256"] })
 
 exports.authMiddleware = (req, res, next) => {
