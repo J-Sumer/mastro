@@ -28,7 +28,7 @@ const withAdmin = Page => {
             context.res.end();
         } else {
             return {
-                ...Page(Page.getInitialProps ? await Page.getInitialProps(context) : {}),
+                // ...Page(Page.getInitialProps ? await Page.getInitialProps(context) : {}),
                 user, token
             }
         }
