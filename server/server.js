@@ -24,10 +24,12 @@ app.use(cors({
 const authRoutes = require('./routes/auth.js')
 const userRoutes = require('./routes/user.js')
 const categoryRoutes = require('./routes/category.js')
+const linkRoutes = require('./routes/link.js')
 // Use routes
 app.use('/api', authRoutes)
 app.use('/api', userRoutes)
 app.use('/api', categoryRoutes)
+app.use('/api', linkRoutes)
 
 
 // Default route
