@@ -15,7 +15,7 @@ mongoose.connect(process.env.DATABASE, {})
 
 //apply middleware 
 app.use(morgan('dev'))
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '10mb', type: 'application/json' }))
 app.use(cors({
     origin: process.env.CLIENT_URL
 }))
