@@ -1,0 +1,41 @@
+.tutorialBox {
+    transition: 150ms ease-in;
+}
+
+.tutorialBox:hover {
+    transform: scale(1.05);
+}
+
+.bigBox {
+    border: 1px solid rgb(189, 189, 189);
+    border-radius: 7px;
+    box-shadow: 0px 0px 7px grey;
+}
+
+.image {
+    width: 90px;
+    height: 60px;
+    border-radius: 5px;
+}
+
+.noUnderline {
+    text-decoration: none;
+    color: black;
+}
+
+.boxTextParent {
+    position: relative;
+    padding-left: 20px;
+}
+
+.boxText {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    font-size: 150%;
+    font-weight: 100;
+    font-family: "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode",
+        Geneva, Verdana, sans-serif;
+}
