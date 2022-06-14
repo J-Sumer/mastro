@@ -5,9 +5,9 @@ import styles from './index.module.css'
 
 const HomePage = ({ categories }) => {
 
-    const list = categories.map(c => {
+    const list = categories.map((c, i) => {
         return (
-            <Link href="/">
+            <Link href="/" key={i}>
                 <a className={`${styles.tutorialBox} ${styles.noUnderline} col-md-3`} >
                     <div className={` ${styles.bigBox} mr-1 mb-4 p-2`}>
                         <div className='row'>

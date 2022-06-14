@@ -3,12 +3,19 @@ import axios from 'axios'
 import withAdmin from '../../withAdmin.js'
 import { useState, useEffect, useRef } from 'react'
 import { showErrorMessage, showSuccessMessage } from '../../../helpers/alerts'
-import Resizer from "react-image-file-resizer";
+import Resizer from "react-image-file-resizer"
+import { Editor, EditorState } from 'draft-js';
+import 'draft-js/dist/Draft.css';
 
 // Here user, token are coming from withAdmin function.
 const createCategory = ({ user, token }) => {
 
     const fileElement = useRef(null);
+
+    const [editorState, setEditorState] = useState(
+        () => EditorState.createEmpty(),
+    );
+
 
     const [state, setState] = useState({
         name: '',
@@ -109,7 +116,7 @@ const createCategory = ({ user, token }) => {
             </div>
             <div className='form-group mb-3'>
                 <lable className="text-muted form-label">Content</lable>
-                <input onChange={handleChange('content')} value={content} type="text" className='form-control shadow-sm' required />
+                <textarea onChange={handleChange('content')} value={content} type="text" className='form-control shadow-sm' required />
             </div>
             <div className='form-group mb-3'>
                 <lable className="text-muted form-label">Image</lable>
