@@ -130,6 +130,7 @@ exports.create = (req, res) => {
         }
         category.image.url = data.Location
         category.image.key = data.Key
+        category.postedBy = req.auth._id
 
         // Save category to database
         category.save((err, cat) => {
