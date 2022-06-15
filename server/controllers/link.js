@@ -31,3 +31,16 @@ exports.list = (req, res) => {
 exports.read = (req, res) => { }
 exports.update = (req, res) => { }
 exports.remove = (req, res) => { }
+
+exports.clickCount = (req, res) => {
+    const { linkId } = req.body
+    Link.findByIdAndUpdate(linkId, { $inc: { clicks: 1 } }, { new: true, upsert: true }).exec((err, data) => {
+        if (err) {
+            console.log(err)
+            return res.status(400).json({
+                error: 'Link doesn\'t exist'
+            })
+        }
+        return res.json(data)
+    })
+}

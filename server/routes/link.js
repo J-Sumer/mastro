@@ -5,7 +5,7 @@ const router = express.Router();
 const { requireSignIn, authMiddleware } = require('../controllers/auth.js')
 
 // Import controllers
-const { list, read, create, update, remove } = require('../controllers/link.js')
+const { list, read, create, update, remove, clickCount } = require('../controllers/link.js')
 
 // Import validators
 const { linkCreateValidator, linkUpdateValidator } = require('../validators/link.js')
@@ -14,6 +14,7 @@ const { runValidation } = require('../validators/index.js')
 // Routes
 router.get('/links', list)
 router.get('/link/:slug', read)
+router.put('/click-count', clickCount)
 router.post('/link', linkCreateValidator, runValidation, requireSignIn, authMiddleware, create)
 router.put('/link/:slug', linkUpdateValidator, runValidation, requireSignIn, authMiddleware, update)
 router.delete('/link/:slug', requireSignIn, authMiddleware, remove)
