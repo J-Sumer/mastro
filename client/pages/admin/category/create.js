@@ -8,7 +8,7 @@ import { Editor, EditorState } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 
 // Here user, token are coming from withAdmin function.
-const createCategory = ({ user, token }) => {
+const CreateCategory = ({ user, token }) => {
 
     const fileElement = useRef(null);
 
@@ -139,4 +139,4 @@ const createCategory = ({ user, token }) => {
     )
 }
 
-export default withAdmin(createCategory)
+export default CreateCategory

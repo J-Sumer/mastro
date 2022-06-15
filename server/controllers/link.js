@@ -3,10 +3,8 @@ const Link = require('../models/link.js')
 exports.create = (req, res) => {
     const { title, url, categories, type, medium } = req.body
     const slug = url
-    let link = new Link({ title, url, type, medium, slug })
-    let arrayOfCategories = categories && categories.split(',')
+    let link = new Link({ title, url, type, medium, slug, categories })
     link.postedBy = req.auth._id
-    link.categories = arrayOfCategories
 
     link.save((err, data) => {
         if (err) {
