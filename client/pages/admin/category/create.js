@@ -139,4 +139,4 @@ const CreateCategory = ({ user, token }) => {
     )
 }
 
-export default CreateCategory
+export default withAdmin(CreateCategory)

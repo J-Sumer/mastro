@@ -1,4 +1,5 @@
 const Category = require('../models/category.js')
+const Link = require('../models/link.js')
 const slugify = require('slugify')
 const AWS = require('aws-sdk')
 const formidable = require('formidable')
@@ -6,12 +7,6 @@ const { v4: uuidv4 } = require('uuid');
 const fs = require('fs')
 
 const s3 = new AWS.S3({
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_KEY,
-    region: process.env.AWS_REGION
-})
-
-const s3delete = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY,
     secretAccessKey: process.env.AWS_SECRET_KEY,
     region: process.env.AWS_REGION
@@ -27,7 +22,31 @@ exports.list = (req, res) => {
 }
 
 exports.read = (req, res) => {
+    const { limit, skip } = req.body
+    const { slug } = req.params
+    let limitCount = limit ? parseInt(limit) : 10
+    let skipCount = skip ? parseInt(skip) : 0
 
+    Category.findOne({ slug }).populate('postedBy', '_id name username').exec((err, category) => {
+        if (err) {
+            return res.status(400).json({ error: 'Category could not load' })
+        }
+        Link.find({ categories: category })
+            .populate('postedBy', '_id name username')
+            .populate('categories', 'name')
+            .sort({ createdAt: -1 })
+            .limit(limitCount)
+            .skip(skipCount)
+            .exec((err, links) => {
+                if (err) {
+                    return res.status(400).json({ error: 'Links cannot be loaded' })
+                }
+                return res.json({
+                    category,
+                    links
+                })
+            })
+    })
 }
 
 // exports.create = (req, res) => {
@@ -130,6 +149,7 @@ exports.create = (req, res) => {
         }
         category.image.url = data.Location
         category.image.key = data.Key
+        console.log("reqauthid", req.auth._id)
         category.postedBy = req.auth._id
 
         // Save category to database
