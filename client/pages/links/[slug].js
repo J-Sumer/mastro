@@ -63,13 +63,25 @@ const Links = ({ category, links, totalLinksLoaded, linksLimit, linkSkip }) => {
         )
     }
 
+    const incrementClickCount = l => async () => {
+        try {
+            const result = await axios.put(`${process.env.API}/click-count`, { linkId: l._id })
+            const currentLinkIndex = allLinks.findIndex(link => link._id == l._id)
+            var tempAllLinks = [...allLinks]
+            tempAllLinks[currentLinkIndex].clicks = result.data.clicks
+            setAllLinks(tempAllLinks)
+        } catch (err) {
+            console.error("Error while incrementing the click count")
+            console.log(err)
+        }
+    }
+
     const listOfLinks = () => {
         return allLinks.map((l, i) => (
             <div key={i} className='row alert alert-primary p-2'>
-                <div className='col-md-8'>
+                <div onClick={incrementClickCount(l)} className='col-md-8'>
                     <a href={l.url} target="_blank">
                         <h5 className='pt-2'>{l.title}</h5>
-
                     </a>
                 </div>
                 <div className='col-md-4 pt-2'>
@@ -82,6 +94,7 @@ const Links = ({ category, links, totalLinksLoaded, linksLimit, linkSkip }) => {
                     {l.categories.map((c, k) => {
                         return <span key={k} className='badge text-success'>{c.name}</span>
                     })}
+                    <span className='badge text-secondary pull-right'>{l.clicks} clicks</span>
                 </div>
             </div>
         ))
