@@ -124,6 +124,9 @@ const Layout = ({ children }) => {
             <div className='container pt-5 pb-5'>
                 {children}
             </div>
+            <footer style={{ height: "200px", borderTop: "2px solid black" }}>
+
+            </footer>
         </React.Fragment>
     )
 }

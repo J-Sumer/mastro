@@ -1,4 +1,31 @@
 .image {
     width: auto;
     max-height: 200px;
+    margin-left: 20%;
+    border-radius: 50%;
+}
+
+.submitButton {
+    margin-left: 40%;
+}
+
+.linkdiv {
+    animation: increaseOpacity;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+@keyframes increaseOpacity {
+    0% {
+        left: 100%;
+        opacity: 0;
+    }
+    100% {
+        left: 0%;
+        opacity: 1;
+    }
+}
+
+.linkTotalDiv {
+    overflow-x: hidden;
 }

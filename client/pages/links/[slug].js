@@ -58,7 +58,9 @@ const Links = ({ category, links, totalLinksLoaded, linksLimit, linkSkip }) => {
     const loadMoreButton = () => {
         return (
             sizeReceived > 0 && sizeReceived == limit && (
-                <button onClick={loadMoreLinks} className='btn btn-lg'>Load more</button>
+                <div className=''>
+                    <button onClick={loadMoreLinks} className={`btn btn-lg btn-light shadow-none ${styles.submitButton}`}>Load more</button>
+                </div>
             )
         )
     }
@@ -78,7 +80,7 @@ const Links = ({ category, links, totalLinksLoaded, linksLimit, linkSkip }) => {
 
     const listOfLinks = () => {
         return allLinks.map((l, i) => (
-            <div key={i} className='row alert alert-primary p-2'>
+            <div key={i} className={`row alert alert-primary p-2 ${styles.linkdiv}`}>
                 <div onClick={incrementClickCount(l)} className='col-md-8'>
                     <a href={l.url} target="_blank">
                         <h5 className='pt-2'>{l.title}</h5>
@@ -108,13 +110,13 @@ const Links = ({ category, links, totalLinksLoaded, linksLimit, linkSkip }) => {
                     <div className='lead alert alert-secondary pt-4'>{category.content}</div>
                 </div>
                 <div className='col-md-4'>
-                    <img src={category.image.url} alt={category.name} className={`${styles.image}`} />
+                    <img src={category.image.url} alt={category.name} className={`${styles.image} `} />
                 </div>
             </div>
             <br />
             <hr />
             <div className='row mt-5'>
-                <div className='col-md-8'>
+                <div className={`col-md-8 ${styles.linkTotalDiv}`} >
                     {listOfLinks()}
                     {loadMoreButton()}
                 </div>
