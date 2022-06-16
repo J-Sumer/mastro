@@ -121,10 +121,10 @@ const Layout = ({ children }) => {
         <React.Fragment>
             {head()}
             {nav()}
-            <div className='container pt-5 pb-5'>
+            <div className='container pt-5 pb-5' style={{ minHeight: "90vh" }}>
                 {children}
             </div>
-            <footer style={{ height: "200px", borderTop: "2px solid black" }}>
+            <footer style={{ height: "200px", borderTop: "2px solid black", backgroundColor: "black" }}>
 
             </footer>
         </React.Fragment>
