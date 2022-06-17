@@ -17,7 +17,8 @@ const withAdmin = Page => {
             })
             user = response.data
         } catch (err) {
-            if (err.response.status == 401) {
+            // if (err.response.status == 401) {
+            if (err) {
                 user = null
             }
         }

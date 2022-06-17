@@ -211,18 +211,18 @@ exports.update = (req, res) => {
         }
         if (image) {
             // remove the existing image from S3
+            console.log("Image" + updatedCategory.image.key)
             const deleteParams = {
                 Bucket: "mastro-bucket1",
-                Key: `images/${updatedCategory.image.key}`
+                Key: updatedCategory.image.key
             }
 
-            s3.deleteObject(deleteParams, (err, data) => {
+            s3.deleteObject(deleteParams, (err) => {
                 if (err) {
                     console.log(err)
                     return res.status(400).json({ error: "Error while deleting the record in s3" })
                 }
             })
-
 
             //image date
             const base64Data = new Buffer.from(image.replace(/^data:image\/\w+;base64,/, ''), 'base64')
@@ -235,7 +235,6 @@ exports.update = (req, res) => {
                 ContentType: `image/${type}`,
                 ContentEncoding: 'base64'
             }
-
 
             s3.upload(updateParams, (err, data) => {
                 if (err) {
@@ -258,18 +257,21 @@ exports.update = (req, res) => {
                                 console.log(err)
                                 return res.status(400).json({ error: "Error while deleting the record in s3" })
                             }
+
+                            return res.status(400).json({
+                                error: 'Error saving the category to db'
+                            })
                         })
 
-                        return res.status(400).json({
-                            error: 'Error saving the category to db'
-                        })
+                    } else {
+                        return res.json(cat)
                     }
-                    return res.json(cat)
                 })
             })
 
+        } else {
+            return res.json(updatedCategory)
         }
-        return res.json(updatedCategory)
     })
 }
 
