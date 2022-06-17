@@ -199,9 +199,105 @@ exports.createold = (req, res) => {
 }
 
 exports.update = (req, res) => {
+    const { slug } = req.params;
+    const { name, image, content } = req.body;
 
+    Category.findOneAndUpdate({ slug }, { name, content }, { new: true }).exec((err, updatedCategory) => {
+        if (err) {
+            console.log("Category cannot be updated", err)
+            return res.status(400).json({
+                error: 'Category cannot be updated'
+            })
+        }
+        if (image) {
+            // remove the existing image from S3
+            const deleteParams = {
+                Bucket: "mastro-bucket1",
+                Key: `images/${updatedCategory.image.key}`
+            }
+
+            s3.deleteObject(deleteParams, (err, data) => {
+                if (err) {
+                    console.log(err)
+                    return res.status(400).json({ error: "Error while deleting the record in s3" })
+                }
+            })
+
+
+            //image date
+            const base64Data = new Buffer.from(image.replace(/^data:image\/\w+;base64,/, ''), 'base64')
+            const type = image.split(';')[0].split('/')[1];
+
+            const updateParams = {
+                Bucket: "mastro-bucket1",
+                Key: `images/${slug}-${uuidv4()}.${type}`,
+                Body: base64Data,
+                ContentType: `image/${type}`,
+                ContentEncoding: 'base64'
+            }
+
+
+            s3.upload(updateParams, (err, data) => {
+                if (err) {
+                    return res.status(400).json({
+                        error: 'Error uploading the image to S3'
+                    })
+                }
+                updatedCategory.image.url = data.Location
+                updatedCategory.image.key = data.Key
+
+                // Save category to database
+                updatedCategory.save((err, cat) => {
+                    if (err) {
+                        const deleteParamsCB = {
+                            Bucket: "mastro-bucket1",
+                            Key: data.Key
+                        }
+                        s3.deleteObject(deleteParamsCB, (err, data) => {
+                            if (err) {
+                                console.log(err)
+                                return res.status(400).json({ error: "Error while deleting the record in s3" })
+                            }
+                        })
+
+                        return res.status(400).json({
+                            error: 'Error saving the category to db'
+                        })
+                    }
+                    return res.json(cat)
+                })
+            })
+
+        }
+        return res.json(updatedCategory)
+    })
 }
 
 exports.remove = (req, res) => {
+    const { slug } = req.params;
 
+    Category.findOneAndRemove({ slug }).exec((err, deletedCategory) => {
+        if (err) {
+            return res.status(400).json({
+                error: 'Error deleting category'
+            })
+        }
+        // remove the existing image from S3
+        const deleteParams = {
+            Bucket: "mastro-bucket1",
+            Key: `images/${deletedCategory.image.key}`
+        }
+
+        s3.deleteObject(deleteParams, (err, data) => {
+            if (err) {
+                console.log(err)
+                return res.status(400).json({ error: "Error while deleting the record in s3" })
+            }
+        })
+
+        res.json({
+            message: 'Category deleted successfully'
+        })
+
+    })
 }
