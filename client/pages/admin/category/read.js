@@ -26,11 +26,32 @@ const AllCategories = ({ user, token }) => {
         })
     }
 
-    const confirmDelete = (slug, e) => {
+    const confirmDelete = async (slug, e) => {
         e.preventDefault();
         const userResponse = confirm("Are you sure you want to delete");
         if (userResponse) {
-            console.log("dd")
+            try {
+                const response = await axios.delete(`${process.env.API}/category/${slug}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+
+                console.log(response)
+
+                const currentCategoryIndex = categories.findIndex(link => link.slug == slug)
+                console.log("currentCategoryIndex", currentCategoryIndex)
+                var tempAllCategories = [...categories]
+                tempAllCategories.splice(currentCategoryIndex, 1)
+                console.log("tempAllCategories", tempAllCategories)
+                setState({
+                    ...state,
+                    success: response.data.message,
+                    categories: [...tempAllCategories]
+                })
+            } catch (err) {
+                console.error("Error deleting the category")
+            }
         }
     }
 

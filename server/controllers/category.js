@@ -285,7 +285,7 @@ exports.remove = (req, res) => {
         // remove the existing image from S3
         const deleteParams = {
             Bucket: "mastro-bucket1",
-            Key: `images/${deletedCategory.image.key}`
+            Key: deletedCategory.image.key
         }
 
         s3.deleteObject(deleteParams, (err, data) => {

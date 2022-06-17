@@ -111,15 +111,15 @@ const CreateCategory = ({ user, token }) => {
     const createCategoryForm = e => (
         <form onSubmit={handleSubmit}>
             <div className='form-group mb-3'>
-                <lable className="form-label">Name</lable>
+                <label className="form-label">Name</label>
                 <input onChange={handleChange('name')} value={name} type="text" className='form-control shadow-sm' required />
             </div>
             <div className='form-group mb-3'>
-                <lable className="text-muted form-label">Content</lable>
+                <label className="text-muted form-label">Content</label>
                 <textarea onChange={handleChange('content')} value={content} type="text" className='form-control shadow-sm' required />
             </div>
             <div className='form-group mb-3'>
-                <lable className="text-muted form-label">Image</lable>
+                <label className="text-muted form-label">Image</label>
                 <input ref={fileElement} onChange={handleImage} type="file" className='form-control shadow-sm' required />
             </div>
             <br />
