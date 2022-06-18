@@ -30,7 +30,15 @@ exports.list = (req, res) => {
 }
 exports.read = (req, res) => { }
 exports.update = (req, res) => { }
-exports.remove = (req, res) => { }
+exports.remove = (req, res) => {
+    const { _id } = req.params
+    Link.findByIdAndDelete(_id).exec((err, data) => {
+
+    })
+    res.json({
+        message: "Category deleted"
+    })
+}
 
 exports.clickCount = (req, res) => {
     const { linkId } = req.body
