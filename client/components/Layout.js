@@ -55,7 +55,7 @@ const Layout = ({ children }) => {
 
     const nav = () => {
         return (
-            <ul className="nav bg-dark">
+            <ul className="nav bg-dark" style={{ position: "fixed", width: "100%", zIndex: "100" }}>
                 <li className="nav-item">
                     <Link href="/">
                         <a className="nav-link text-light" href="#">Home</a>
