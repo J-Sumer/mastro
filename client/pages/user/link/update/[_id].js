@@ -4,8 +4,10 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import styles from './update.module.css'
 import React from "react"
+import withUser from "../../../withUser"
+import { showSuccessMessage } from '../../../../helpers/alerts'
 
-const UpdateLink = () => {
+const UpdateLink = ({ token }) => {
 
     const router = useRouter();
     const { _id } = router.query;
@@ -23,17 +25,18 @@ const UpdateLink = () => {
 
     const fetchLinkDetails = async () => {
         try {
-            const response = await axios.get(`${process.env.API}/link/${_id}`)
-            console.log("response")
-            console.log(response)
-            const { title, url, type, medium, categories } = response.data
+            const linkDetails = await axios.get(`${process.env.API}/link/${_id}`)
+            const categoryList = await axios.get(`${process.env.API}/categories`)
+            const { title, url, type, medium, categories } = linkDetails.data
+            console.log("categories", categories)
             setState({
                 ...state,
                 title,
                 url,
                 type,
                 medium,
-                loadedCategories: categories
+                loadedCategories: categoryList.data,
+                categories
             })
         } catch (err) {
             console.error("Error fetching details of the link")
@@ -41,38 +44,25 @@ const UpdateLink = () => {
         }
     }
 
-    const loadCategories = async () => {
-        const response = await axios.get(`${process.env.API}/categories`)
-        setState({ ...state, loadedCategories: response.data })
-    }
-
     useEffect(() => {
         if (_id) {
             fetchLinkDetails();
-            loadCategories();
         }
     }, [router])
-
 
     const { title, url, categories, loadedCategories, success, error, type, medium } = state
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.post(`${process.env.API}/link`, { title, url, categories, type, medium }, {
+            const response = await axios.put(`${process.env.API}/link/${_id}`, { title, url, categories, type, medium }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
             setState({
                 ...state,
-                title: '',
-                url: '',
-                categories: [],
-                success: 'Succesfully created link',
-                error: '',
-                type: 'free',
-                medium: 'video'
+                success: 'Succesfully updated link'
             })
         } catch (err) {
             console.log(err)
@@ -102,10 +92,14 @@ const UpdateLink = () => {
         setState({ ...state, url: e.target.value, error: '', success: '' })
     }
 
+    const isChecked = (_id) => {
+        return categories.indexOf(_id) !== -1 ? true : false
+    }
+
     const showCategories = () => {
         return loadedCategories && loadedCategories.map((c, i) => (
             <li className='list-unstyled' key={c._id}>
-                <input className='mr-2' type="checkbox" onChange={handleCategoryToggle(c._id)} />
+                <input className='mr-2' type="checkbox" onChange={handleCategoryToggle(c._id)} checked={isChecked(c._id)} />
                 <label className='form-check-label ms-2'>{c.name}</label>
             </li>
         ))
@@ -153,7 +147,7 @@ const UpdateLink = () => {
                 <input onChange={handleURLChange} type="text" className="form-control shadow-sm" id="URL" aria-describedby="URLHelp" value={url} required />
             </div>
             <div className='form-group'>
-                <button className='btn btn-outline-dark shadow-none'>Submit</button>
+                <button className='btn btn-outline-dark shadow-none'>Update</button>
             </div>
         </form>
     )
@@ -198,4 +192,4 @@ const UpdateLink = () => {
     )
 }
 
-export default UpdateLink
+export default withUser(UpdateLink)
