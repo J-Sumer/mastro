@@ -53,7 +53,7 @@ const User = ({ user, token, userLinks }) => {
                     </div>
                 </div>
                 <div className='col-md-2 pt-2 pb-2'>
-                    <Link href={`/user/link/${l.slug}`}>
+                    <Link href={`/user/link/update/${l.slug}`}>
                         <button className='btn btn-sm btn-outline-secondary w-100 mb-2 shadow-sm'>Edit</button>
                     </Link>
                     <button onClick={(e) => confirmDelete(l.slug, l._id, e)} className='btn btn-sm btn-outline-danger w-100 shadow-sm'>Delete</button>

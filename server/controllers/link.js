@@ -1,8 +1,9 @@
 const Link = require('../models/link.js')
+const slugify = require('slugify')
 
 exports.create = (req, res) => {
     const { title, url, categories, type, medium } = req.body
-    const slug = url
+    const slug = slugify(title)
     let link = new Link({ title, url, type, medium, slug, categories })
     link.postedBy = req.auth._id
 
@@ -28,8 +29,27 @@ exports.list = (req, res) => {
         return res.json(data)
     })
 }
+
 exports.read = (req, res) => { }
-exports.update = (req, res) => { }
+
+exports.update = (req, res) => {
+    const { _id } = req.params
+    const { title, url, categories, type, medium } = req.body
+
+    // link.postedBy = req.auth._id
+
+    Link.findByIdAndUpdate(_id, { title, url, categories, type, medium }, { returnDocument: 'after' }).exec((err, updatedLink) => {
+        if (err) {
+            console.log(err)
+            return res.status(400).json({
+                error: 'Error updating links'
+            })
+        }
+        res.json(updatedLink)
+    })
+
+}
+
 exports.remove = (req, res) => {
     const { _id } = req.params
     Link.findByIdAndDelete(_id).exec((err, data) => {

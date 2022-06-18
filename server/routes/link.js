@@ -16,7 +16,7 @@ router.get('/links', list)
 router.get('/link/:slug', read)
 router.put('/click-count', clickCount)
 router.post('/link', linkCreateValidator, runValidation, requireSignIn, authMiddleware, create)
-router.put('/link/:slug', linkUpdateValidator, runValidation, requireSignIn, authMiddleware, update)
+router.put('/link/:_id', linkUpdateValidator, runValidation, requireSignIn, authMiddleware, update)
 router.delete('/link/:_id', requireSignIn, authMiddleware, remove)
 
 module.exports = router;
