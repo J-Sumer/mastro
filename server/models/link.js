@@ -32,11 +32,11 @@ const linkSchema = new mongoose.Schema(
         }],
         type: {
             type: String,
-            default: "Free"
+            default: "free"
         },
         medium: {
             type: String,
-            default: "Video"
+            default: "video"
         },
         clicks: {
             type: Number,

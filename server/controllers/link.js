@@ -1,5 +1,6 @@
 const Link = require('../models/link.js')
 const slugify = require('slugify')
+const link = require('../models/link.js')
 
 exports.create = (req, res) => {
     const { title, url, categories, type, medium } = req.body
@@ -30,7 +31,18 @@ exports.list = (req, res) => {
     })
 }
 
-exports.read = (req, res) => { }
+exports.read = (req, res) => {
+    const { _id } = req.params
+    Link.findById(_id).exec((err, link) => {
+        if (err) {
+            console.log(err)
+            return res.status(400).json({
+                error: "Error getting details of the link"
+            })
+        }
+        res.json(link)
+    })
+}
 
 exports.update = (req, res) => {
     const { _id } = req.params

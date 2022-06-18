@@ -13,7 +13,7 @@ const { runValidation } = require('../validators/index.js')
 
 // Routes
 router.get('/links', list)
-router.get('/link/:slug', read)
+router.get('/link/:_id', read)
 router.put('/click-count', clickCount)
 router.post('/link', linkCreateValidator, runValidation, requireSignIn, authMiddleware, create)
 router.put('/link/:_id', linkUpdateValidator, runValidation, requireSignIn, authMiddleware, update)
